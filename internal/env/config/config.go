@@ -6,6 +6,16 @@ import (
 	"time"
 )
 
+type Config struct {
+	AutoDB PostgresConfig `env:",prefix=DB_"`
+	Logger LoggerConfig   `env:",prefix=LOGGER_"`
+}
+
+type LoggerConfig struct {
+	Level string `env:"LEVEL,default=debug"`
+	Debug bool   `env:"DEBUG,default=true"`
+}
+
 type PostgresConfig struct {
 	Name         string        `env:"NAME,default=auto" json:",omitempty"`
 	User         string        `env:"USER,default=postgres" json:",omitempty"`
@@ -25,17 +35,17 @@ func (c PostgresConfig) ConnectionURL() string {
 
 		host = host + ":" + strconv.Itoa(c.Port)
 	}
-	
+
 	u := &url.URL{
 		Scheme: "postgres",
 		Host:   host,
 		Path:   c.Name,
 	}
-	
+
 	if c.User != "" || c.Password != "" {
 		u.User = url.UserPassword(c.User, c.Password)
 	}
-	
+
 	q := u.Query()
 	if v := c.ConnTimeout; v > 0 {
 		q.Add("connect_timeout", strconv.Itoa(v))
@@ -43,7 +53,7 @@ func (c PostgresConfig) ConnectionURL() string {
 	if v := c.SSLMode; v != "" {
 		q.Add("sslmode", v)
 	}
-	
+
 	u.RawQuery = q.Encode()
 
 	return u.String()

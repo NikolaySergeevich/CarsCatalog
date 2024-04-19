@@ -11,6 +11,7 @@ import (
 	"sync"
 	"syscall"
 	"testcar/internal/database/car"
+	"testcar/internal/env"
 	"testcar/internal/env/config"
 	"testcar/internal/handler"
 	"testcar/pkg/api/carapi"
@@ -41,19 +42,27 @@ func main() {
 func runMain(ctx context.Context) error {
 	router := chi.NewRouter()
 
-	var cfg config.PostgresConfig
+	var cfg config.Config
+	enver := &env.Env{}
 	if err := envconfig.Process(ctx, &cfg); err != nil {
 		return fmt.Errorf("env processing: %w", err)
 	}
 
-	carDBConn, err := pgxpool.Connect(ctx, cfg.ConnectionURL())
+	logger, err := env.InitLogger(&cfg)
+	if err != nil {
+		return fmt.Errorf("initLogger: %w", err)
+	}
+	enver.Logger = logger
+
+	carDBConn, err := pgxpool.Connect(ctx, cfg.AutoDB.ConnectionURL())
 	if err != nil {
 		return fmt.Errorf("pgxpool Connect: %w", err)
 	}
-	log.Println("connect - " + cfg.ConnectionURL())
-
+	log.Println("connect - " + cfg.AutoDB.ConnectionURL())
 	carRepository := car.New(carDBConn, 5*time.Second)
-	handler := handler.NewHandler(*carRepository)
+	enver.AutoRepository = carRepository
+
+	handler := handler.NewHandler(ctx, *enver)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)

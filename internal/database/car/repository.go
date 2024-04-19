@@ -21,7 +21,7 @@ type Repository struct {
 	timeout time.Duration
 }
 
-func (r *Repository) Create(ctx context.Context, req []database.CreateCar) ([]database.Car, error) {
+func (r *Repository) Create(ctx context.Context, req []database.CreateCar) (error) {
 	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
@@ -45,11 +45,11 @@ func (r *Repository) Create(ctx context.Context, req []database.CreateCar) ([]da
 		if _, err := r.db.Exec(ctx, query, uuid.New(), v.Mark, v.Model, v.Color, v.Year, v.RegNum, v.Owner, time.Now(), time.Now()); err != nil {
 			var writerErr *pgconn.PgError
 			if errors.As(err, &writerErr) && writerErr.Code == "23505" {
-				return res, database.ErrConflict
+				return database.ErrConflict
 			}
-			return res, fmt.Errorf("postgres Exec: %w", err)
+			return fmt.Errorf("postgres Exec: %w", err)
 		}
 		res = append(res, c)
 	}
-	return res, nil
+	return nil
 }
