@@ -3,8 +3,6 @@ info:
   title: Car Catalog API
   description: REST API for managing car catalog
   version: 1.0.0
-# servers:
-#   - url: https://example.com/api/v1
 paths:
   /cars:
     get:
