@@ -11,9 +11,9 @@ type Car struct {
 	Mark      string    `db:"mark"`
 	Model     string    `db:"model"`
 	Color     string    `db:"color"`
-	Year      int       `db:"year"`
+	Year      int       `db:"yearCr"`
 	RegNums   string    `db:"regNums"`
-	Owner     string    `db:"owner"`
+	Owner     string    `db:"ownerCar"`
 	CreatedAt time.Time `db:"created_at"`
 	UpdatedAt time.Time `db:"updated_at"`
 }

@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO cars (id, mark, model, color, year, regNums, owner)
+INSERT INTO cars (id, mark, model, color, yearCr, regNums, ownerCar)
 VALUES
   ('123e4567-e89b-12d3-a456-426614174001', 'Toyota', 'Camry', 'Blue', 2020, 'X123XX001', 'John Doe'),
   ('123e4567-e89b-12d3-a456-426614174002', 'Honda', 'Accord', 'Red', 2018, 'Y456YY002', 'Jane Smith'),

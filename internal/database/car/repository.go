@@ -53,3 +53,31 @@ func (r *Repository) Create(ctx context.Context, req []database.CreateCar) (erro
 	}
 	return nil
 }
+
+func (r *Repository) TakeCars(ctx context.Context, query string, args []interface{}) ([]database.Car, error){
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+
+	listCar := make([]database.Car,0)
+	rows, err := r.db.Query(ctx, query, args...)
+	defer rows.Close()
+
+	for rows.Next() {
+		car := database.Car{} 
+		err := rows.Scan(&car.ID, &car.Mark, &car.Model, &car.Color, &car.Year, &car.RegNums, &car.Owner, &car.CreatedAt, &car.UpdatedAt)
+		if err != nil {
+			return nil, fmt.Errorf("rows.Scan: %w", err)
+		}
+		listCar = append(listCar, car)
+	}
+
+	if err != nil {
+		var writerErr *pgconn.PgError
+		if errors.As(err, &writerErr) && writerErr.Code == "23505" {
+			return nil, database.ErrConflict
+		}
+		return nil, fmt.Errorf("postgres Exec: %w", err)
+	}
+	
+	return listCar, nil
+}
