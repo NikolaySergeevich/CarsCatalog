@@ -17,15 +17,15 @@ type LoggerConfig struct {
 }
 
 type PostgresConfig struct {
-	Name         string        `env:"NAME,default=auto" json:",omitempty"`
-	User         string        `env:"USER,default=postgres" json:",omitempty"`
-	Host         string        `env:"HOST,default=localhost" json:",omitempty"`
-	Port         int           `env:"PORT,default=5434" json:",omitempty"`
-	SSLMode      string        `env:"SSLMODE,default=disable" json:",omitempty"`
-	ConnTimeout  int           `env:"CONN_TIMEOUT,default=5" json:",omitempty"`
-	Password     string        `env:"PASSWORD,default=postgres" json:"-"`
-	PoolMinConns int           `env:"POOL_MIN_CONNS,default=10" json:",omitempty"`
-	PoolMaxConns int           `env:"POOL_MAX_CONNS,default=50" json:",omitempty"`
+	Name         string        `env:"NAME,default=auto"`
+	User         string        `env:"USER,default=postgres"`
+	Host         string        `env:"HOST,default=localhost"`
+	Port         int           `env:"PORT,default=5434"`
+	SSLMode      string        `env:"SSLMODE,default=disable"`
+	ConnTimeout  int           `env:"CONN_TIMEOUT,default=5"`
+	Password     string        `env:"PASSWORD,default=postgres"`
+	PoolMinConns int           `env:"POOL_MIN_CONNS,default=10"`
+	PoolMaxConns int           `env:"POOL_MAX_CONNS,default=50"`
 	DBTimeout    time.Duration `env:"TIMEOUT,default=5s"`
 }
 

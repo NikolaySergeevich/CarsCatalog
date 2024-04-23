@@ -7,6 +7,7 @@ import (
 	"log"
 	"log/slog"
 	"net/http"
+	// "os"
 	"os/signal"
 	"sync"
 	"syscall"
@@ -25,6 +26,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -41,6 +43,11 @@ func main() {
 
 func runMain(ctx context.Context) error {
 	router := chi.NewRouter()
+
+	err := godotenv.Load("../../conf.env")
+	if err != nil{
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 
 	var cfg config.Config
 	enver := &env.Env{}
@@ -92,7 +99,7 @@ func runMain(ctx context.Context) error {
 		}
 		go func() {
 			<-ctx.Done()
-			// если посылаем сигнал завершения то завершаем работу нашего сервера
+			// если посылаем сигнал завершения то завершаем работу сервера
 			srv.Close()
 		}()
 		slog.Info(fmt.Sprintf("http server was started %s", ":8111"))
