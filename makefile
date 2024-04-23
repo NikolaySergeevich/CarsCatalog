@@ -9,23 +9,10 @@ build:
 clean:
 	rm -rf bin/
 
-.PHONY: genid
-genid:
-	go run cmd/genid/main.go
-
 .PHONY: generate
 generate:
 
 	go generate ./...
-
-
-.PHONY: test
-test:
-	go test -short ./...
-
-.PHONY: integration
-integration:
-	go test -race ./...
 
 .PHONY: docker
 docker-run:
