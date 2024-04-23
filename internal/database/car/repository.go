@@ -81,3 +81,28 @@ func (r *Repository) TakeCars(ctx context.Context, query string, args []interfac
 	
 	return listCar, nil
 }
+
+func (r *Repository) DeleteCarsId(ctx context.Context, id uuid.UUID) (error){
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+
+	query := `DELETE FROM cars WHERE id=$1`
+	if _, err := r.db.Exec(ctx, query, id); err != nil {
+		return fmt.Errorf("postgres Exec: %w", err)
+	}
+	return nil
+}
+
+func (r * Repository) UpdateCar(ctx context.Context, query string, args []interface{}) error{
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+	res, err := r.db.Exec(ctx, query, args...)
+	if err != nil{
+		return fmt.Errorf("Postgres Exec : %w", err)
+	}
+	countStr := res.RowsAffected()
+	if countStr == 0{
+		return fmt.Errorf("No car found with the provided ID: %w", err)
+	}
+	return nil
+}

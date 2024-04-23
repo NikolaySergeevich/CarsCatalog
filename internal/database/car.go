@@ -22,10 +22,10 @@ type AddCars struct {
 	RegNums []string
 }
 type CreateCar struct {
-	Mark   string
-	Model  string
-	RegNum string
-	Owner  string
-	Color  string
-	Year   int
+	Mark   string `json:"mark"`
+	Model  string `json:"model"`
+	RegNum string `json:"regNum"`
+	Owner  string `json:"owner"`
+	Color  string `json:"color"`
+	Year   int    `json:"year"`
 }

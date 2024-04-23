@@ -157,3 +157,23 @@ components:
         updated_at:
           type: string
           description: The updated_at of the car
+    CarUpdate:
+      type: object
+      required:
+        - mark
+        - model
+        - color
+        - owner
+      properties:
+        mark:
+          type: string
+          description: New mark of the car
+        model:
+          type: string
+          description: New model of the car
+        color:
+          type: string
+          description: New color of the car
+        owner:
+          type: string
+          description: New owner of the car
