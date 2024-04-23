@@ -21,7 +21,7 @@ type Repository struct {
 	timeout time.Duration
 }
 
-func (r *Repository) Create(ctx context.Context, req []database.CreateCar) ([]database.Car, error) {
+func (r *Repository) Create(ctx context.Context, req []database.CreateCar) error {
 	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
@@ -45,11 +45,62 @@ func (r *Repository) Create(ctx context.Context, req []database.CreateCar) ([]da
 		if _, err := r.db.Exec(ctx, query, uuid.New(), v.Mark, v.Model, v.Color, v.Year, v.RegNum, v.Owner, time.Now(), time.Now()); err != nil {
 			var writerErr *pgconn.PgError
 			if errors.As(err, &writerErr) && writerErr.Code == "23505" {
-				return res, database.ErrConflict
+				return database.ErrConflict
 			}
-			return res, fmt.Errorf("postgres Exec: %w", err)
+			return fmt.Errorf("postgres Exec: %w", err)
 		}
 		res = append(res, c)
 	}
-	return res, nil
+	return nil
+}
+
+func (r *Repository) TakeCars(ctx context.Context, query string, args []interface{}) ([]database.Car, error) {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+
+	listCar := make([]database.Car, 0)
+	rows, err := r.db.Query(ctx, query, args...)
+	defer rows.Close()
+
+	for rows.Next() {
+		car := database.Car{}
+		err := rows.Scan(&car.ID, &car.Mark, &car.Model, &car.Color, &car.Year, &car.RegNums, &car.Owner, &car.CreatedAt, &car.UpdatedAt)
+		if err != nil {
+			return nil, fmt.Errorf("rows.Scan: %w", err)
+		}
+		listCar = append(listCar, car)
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("postgres Exec: %w", err)
+	}
+	if len(listCar) == 0 {
+		return nil, database.ErrNotFound
+	}
+	return listCar, nil
+}
+
+func (r *Repository) DeleteCarsId(ctx context.Context, id uuid.UUID) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+
+	query := `DELETE FROM cars WHERE id=$1`
+	if _, err := r.db.Exec(ctx, query, id); err != nil {
+		return fmt.Errorf("postgres Exec: %w", err)
+	}
+	return nil
+}
+
+func (r *Repository) UpdateCar(ctx context.Context, query string, args []interface{}) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
+	res, err := r.db.Exec(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("Postgres Exec : %w", err)
+	}
+	countStr := res.RowsAffected()
+	if countStr == 0 {
+		return fmt.Errorf("No car found with the provided ID: %w", err)
+	}
+	return nil
 }

@@ -7,10 +7,12 @@ import (
 	"log"
 	"log/slog"
 	"net/http"
+	// "os"
 	"os/signal"
 	"sync"
 	"syscall"
 	"testcar/internal/database/car"
+	"testcar/internal/env"
 	"testcar/internal/env/config"
 	"testcar/internal/handler"
 	"testcar/pkg/api/carapi"
@@ -24,6 +26,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -41,19 +44,32 @@ func main() {
 func runMain(ctx context.Context) error {
 	router := chi.NewRouter()
 
-	var cfg config.PostgresConfig
+	err := godotenv.Load("../../conf.env")
+	if err != nil{
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	var cfg config.Config
+	enver := &env.Env{}
 	if err := envconfig.Process(ctx, &cfg); err != nil {
 		return fmt.Errorf("env processing: %w", err)
 	}
 
-	carDBConn, err := pgxpool.Connect(ctx, cfg.ConnectionURL())
+	logger, err := env.InitLogger(&cfg)
+	if err != nil {
+		return fmt.Errorf("initLogger: %w", err)
+	}
+	enver.Logger = logger
+
+	carDBConn, err := pgxpool.Connect(ctx, cfg.AutoDB.ConnectionURL())
 	if err != nil {
 		return fmt.Errorf("pgxpool Connect: %w", err)
 	}
-	log.Println("connect - " + cfg.ConnectionURL())
-
+	log.Println("connect - " + cfg.AutoDB.ConnectionURL())
 	carRepository := car.New(carDBConn, 5*time.Second)
-	handler := handler.NewHandler(*carRepository)
+	enver.AutoRepository = carRepository
+
+	handler := handler.NewHandler(ctx, *enver)
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
@@ -83,7 +99,7 @@ func runMain(ctx context.Context) error {
 		}
 		go func() {
 			<-ctx.Done()
-			// если посылаем сигнал завершения то завершаем работу нашего сервера
+			// если посылаем сигнал завершения то завершаем работу сервера
 			srv.Close()
 		}()
 		slog.Info(fmt.Sprintf("http server was started %s", ":8111"))

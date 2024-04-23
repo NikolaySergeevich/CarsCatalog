@@ -11,6 +11,7 @@ require (
 	github.com/google/uuid v1.5.0
 	github.com/jackc/pgconn v1.14.3
 	github.com/jackc/pgx/v4 v4.18.3
+	github.com/joho/godotenv v1.5.1
 	github.com/oapi-codegen/runtime v1.1.1
 	github.com/sethvargo/go-envconfig v1.0.1
 )

@@ -1,0 +1,37 @@
+BEGIN;
+
+INSERT INTO cars (id, mark, model, color, yearCr, regNums, ownerCar)
+VALUES
+  ('123e4567-e89b-12d3-a456-426614174001', 'Toyota', 'Camry', 'Blue', 2020, 'X123XX001', 'John Doe'),
+  ('123e4567-e89b-12d3-a456-426614174002', 'Honda', 'Accord', 'Red', 2018, 'Y456YY002', 'Jane Smith'),
+  ('123e4567-e89b-12d3-a456-426614174003', 'Ford', 'Fusion', 'Black', 2019, 'Z789ZZ003', 'Mike Johnson'),
+  ('123e4567-e89b-12d3-a456-426614174004', 'Chevrolet', 'Malibu', 'White', 2017, 'B654BB004', 'Sarah Williams'),
+  ('123e4567-e89b-12d3-a456-426614174005', 'Nissan', 'Altima', 'Gray', 2016, 'C321CC005', 'Michael Brown'),
+  ('123e4567-e89b-12d3-a456-426614174006', 'Hyundai', 'Sonata', 'Green', 2018, 'D987DD006', 'Jessica Taylor'),
+  ('123e4567-e89b-12d3-a456-426614174007', 'BMW', '3 Series', 'Black', 2021, 'E654EE007', 'David Martinez'),
+  ('123e4567-e89b-12d3-a456-426614174008', 'Mercedes-Benz', 'C-Class', 'Silver', 2019, 'F321FF008', 'Amanda Garcia'),
+  ('123e4567-e89b-12d3-a456-426614174009', 'Audi', 'A4', 'Red', 2020, 'G987GG009', 'William Rodriguez'),
+  ('123e4567-e89b-12d3-a456-426614174010', 'Volkswagen', 'Jetta', 'Blue', 2017, 'H654HH010', 'Ashley Hernandez'),
+  ('123e4567-e89b-12d3-a456-426614174011', 'Toyota', 'Corolla', 'White', 2018, 'I321II011', 'Christopher Lopez'),
+  ('123e4567-e89b-12d3-a456-426614174012', 'Honda', 'Civic', 'Black', 2019, 'J987JJ012', 'Jennifer Martinez'),
+  ('123e4567-e89b-12d3-a456-426614174013', 'Ford', 'Focus', 'Gray', 2016, 'K654KK013', 'Matthew Lee'),
+  ('123e4567-e89b-12d3-a456-426614174014', 'Chevrolet', 'Impala', 'Red', 2017, 'L321LL014', 'Emily Gonzalez'),
+  ('123e4567-e89b-12d3-a456-426614174015', 'Nissan', 'Maxima', 'Black', 2020, 'M987MM015', 'Daniel Perez'),
+  ('123e4567-e89b-12d3-a456-426614174016', 'Hyundai', 'Elantra', 'Silver', 2018, 'N654NN016', 'Taylor Lewis'),
+  ('123e4567-e89b-12d3-a456-426614174017', 'BMW', '5 Series', 'Blue', 2019, 'O321OO017', 'Lauren Walker'),
+  ('123e4567-e89b-12d3-a456-426614174018', 'Mercedes-Benz', 'E-Class', 'White', 2016, 'P987PP018', 'Andrew Scott'),
+  ('123e4567-e89b-12d3-a456-426614174019', 'Audi', 'A6', 'Black', 2021, 'Q654QQ019', 'Olivia King'),
+  ('123e4567-e89b-12d3-a456-426614174020', 'Volkswagen', 'Passat', 'Gray', 2017, 'R321RR020', 'Brandon Young'),
+  ('123e4567-e89b-12d3-a456-426614174021', 'Toyota', 'RAV4', 'Silver', 2018, 'S987SS021', 'Samantha Wright'),
+  ('123e4567-e89b-12d3-a456-426614174022', 'Honda', 'Pilot', 'Red', 2019, 'T654TT022', 'Justin Brown'),
+  ('123e4567-e89b-12d3-a456-426614174023', 'Ford', 'Escape', 'Blue', 2016, 'U321UU023', 'Hannah Martinez'),
+  ('123e4567-e89b-12d3-a456-426614174024', 'Chevrolet', 'Equinox', 'White', 2017, 'V987VV024', 'David Wilson'),
+  ('123e4567-e89b-12d3-a456-426614174025', 'Nissan', 'Rogue', 'Black', 2020, 'W654WW025', 'Madison Garcia'),
+  ('123e4567-e89b-12d3-a456-426614174026', 'Hyundai', 'Tucson', 'Gray', 2018, 'X321XX026', 'Robert Taylor'),
+  ('123e4567-e89b-12d3-a456-426614174027', 'BMW', '7 Series', 'Silver', 2019, 'Y987YY027', 'Ella Hernandez'),
+  ('123e4567-e89b-12d3-a456-426614174028', 'Mercedes-Benz', 'S-Class', 'Blue', 2016, 'Z321ZZ028', 'Noah Gonzalez'),
+  ('123e4567-e89b-12d3-a456-426614174029', 'Audi', 'A8', 'Red', 2021, 'AA987AA029', 'Grace Lopez'),
+  ('123e4567-e89b-12d3-a456-426614174030', 'Volkswagen', 'Tiguan', 'Black', 2017, 'BB321BB030', 'Logan Martinez'),
+  ('123e4567-e89b-12d3-a456-426614174031', 'Toyota', 'Highlander', 'Gray', 2018, 'CC987CC031', 'Julia Rodriguez'),
+  ('123e4567-e89b-12d3-a456-426614174032', 'Honda', 'CR-V', 'Silver', 2019, 'DD321DD032', 'Ethan Miller');
+END;
